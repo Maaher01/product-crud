@@ -41,18 +41,14 @@ class ProductController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
             'price' => ['required', 'numeric', 'min:0'],
-            'description' => ['required', 'string']
+            'description' => ['nullable', 'string']
         ]);
 
         if($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $product = Product::create($request->only([
-            'name' => $request->name,
-            'price' => $request->price,
-            'description' => $request->description
-        ]));
+        $product = Product::create($request->only(['name', 'price', 'description']));
 
         return redirect()->route('products.index')->with('success', 'Product created successfully');
     }
@@ -74,9 +70,9 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function edit()
+    public function edit(Product $product)
     {
-        return view('products.edit');
+        return view('products.edit', compact('product'));
     }
 
     /**
