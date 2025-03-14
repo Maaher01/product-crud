@@ -20,6 +20,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\ProductController::class, 'index'])->middleware('auth');
-
-Route::resource('products', ProductController::class);
+Route::middleware(['auth'])->group(function () {
+    Route::get('/home', [ProductController::class, 'index']);
+    Route::resource('products', ProductController::class);
+});
