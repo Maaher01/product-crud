@@ -13,7 +13,11 @@
           <th scope="col">Name</th>
           <th scope="col">Price</th>
           <th scope="col">Description</th>
-          <th scope="col">Actions</th>
+          <!-- @if($products->some(fn($product) => auth()->user()->canany(['update', 'delete'], $product))) -->
+          <th scope="col">
+            <!-- Actions -->
+          </th>
+          <!-- @endif -->
         </tr>
       </thead>
       <tbody>
@@ -22,19 +26,26 @@
           <td>{{ $product->name }}</th>
           <td>{{ $product->price }}</td>
           <td>{{ $product->description }}</td>
+          <!-- @if(auth()->user()->canany(['update', 'delete'], $product)) -->
           <td> 
             <!-- Edit Button -->
+            @can('update', $product)
             <a href="{{ route('products.edit', $product->id) }}" class="btn btn-success btn-sm">
                 <i class="bi bi-pencil-square"></i>
             </a>
+            @endcan
             <!-- Delete Button -->
+            @can('delete', $product)
             <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display:inline;">
               @csrf
               @method('DELETE')
               <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this product?')">
                 <i class="bi bi-trash3-fill"></i>
               </button>
+            </form>
+            @endcan
           </td>
+          <!-- @endif -->
         </tr>
         @endforeach
       </tbody>

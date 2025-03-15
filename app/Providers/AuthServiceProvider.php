@@ -1,6 +1,10 @@
 <?php
 
 namespace App\Providers;
+use Illuminate\Support\Facades\Gate;
+use App\Models\User;
+use App\Models\Poduct;
+use App\Policies\ProductPolicy;
 
 // use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -13,7 +17,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+        Product::class => ProductPolicy::class,
     ];
 
     /**
@@ -25,6 +29,16 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        // Gate::define('products_create', function (User $user) {
+        //     return in_array($user->role, ['user', 'admin', 'super_admin']);
+        // });
+
+        // Gate::define('products_edit', function (User $user) {
+        //     return in_array($user->role, ['admin', 'super_admin']);
+        // });
+
+        // Gate::define('products_delete', function (User $user) {
+        //     return in_array($user->role, ['super_admin']);
+        // });
     }
 }

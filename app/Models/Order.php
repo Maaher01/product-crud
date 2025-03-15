@@ -9,7 +9,7 @@ class Order extends Model
 {
     use HasFactory;
 
-    public class user()
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
